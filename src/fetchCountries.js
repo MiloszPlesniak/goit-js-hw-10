@@ -1,7 +1,6 @@
-const COUNTRY = "https://restcountries.com/v3.1/name/"
+const COUNTRIES = "https://restcountries.com/v3.1/name/"
 export default function fetchCountries(name) {
-    return fetch(`${COUNTRY + name}`).then((response) => {
-    const countryData = response.json()
-    return countryData
-})
+    return fetch(`${COUNTRIES + name}?fields=name,capital,population,flags,languages`)
+        .then(response => response.json())
 }
+export { fetchCountries };

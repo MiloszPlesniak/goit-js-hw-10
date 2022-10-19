@@ -1,41 +1,65 @@
 import './css/styles.css';
-import fetchCountries from './fetchCountries';
+import { fetchCountries } from './fetchCountries'
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+
+
 const debounce = require('lodash.debounce');
-const inputSerch = document.querySelector('#search-box')
 const DEBOUNCE_DELAY = 300;
 
-inputSerch.addEventListener('input', (e) => {
+const inputSerch = document.querySelector('#search-box')
+const countryList = document.querySelector('.country-list')
+const countryInfo = document.querySelector('.country-info')
 
-})
+inputSerch.addEventListener('input', debounce((e) => {
+    countryInfo.innerHTML = ''
+    countryList.innerHTML= ''
 
-
-fetchCountries("a").then((countries) => {
-    
-    for (const country of countries) {
-        console.log(countries.length)
-        
-        if (countries.lengthM < 10) {
+    fetchCountries(e.target.value.trim()).then((countries) => {
+        // console.log(countries)
+        if (countries.length > 10) {
+            Notify.info('Too many matches found. Please enter a more specific name.')
+        } else if (countries.length >2 && countries.length <10) {
+            for (const country of countries) {
+                
+                let listItem = document.createElement('li');
+                listItem.style.display = 'flex'
+                let icon = document.createElement('img');
+                let nameOfCountry = document.createElement('p')
+                nameOfCountry.textContent = country.name.official;
+                icon.setAttribute('src', country.flags.png);
+                icon.setAttribute('alt', country.name.official);
+                icon.setAttribute('width', '40');
+                icon.setAttribute('height', '30');
+                listItem.append(icon);
+                countryList.append(listItem);
+                listItem.append(nameOfCountry)
+            }
+        } else if (countries.length===1) {
+            let country = countries[0]
+            let languages = Object.values(country.languages).join()
+            countryInfo.innerHTML = `<h2>
+            <img src='${country.flags.png}' alt='${country.name.common}' width='50' height='40'/>
+            ${country.name.official}
+            </h2>
+            <p>Capital: ${country.capital}</p>
+            <p>Population: ${country.population}</p>
+            <p>Languages:${languages}</p>`
             
+        } else if (inputSerch.value.length === 0) {
+            console.log('Miłego dnia Panie mentorze')
+        } else {
+            Notify.failure("Oops, there is no country with that name")
         }
-    }
-})
+           })
+},DEBOUNCE_DELAY))
 
 
 
 
 
-// fetchCountries("poland").then((updateCountryData) => {
-//     const foundCountry = updateCountryData[0]
-//     const countryDetails = {
-//         nameOfCountry: foundCountry.name.official,
-//         capital: foundCountry.capital[0],
-//         population: foundCountry.population,
-//         flags: foundCountry.flags.svg,
-//         languages: foundCountry.languages.pol
-//     }
-//     return countryDetails
-// }).then((countryDetails) => {
-    
-// })
+
+
+
+
 
 
