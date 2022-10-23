@@ -18,7 +18,7 @@ inputSerch.addEventListener('input', debounce((e) => {
         // console.log(countries)
         if (countries.length > 10) {
             Notify.info('Too many matches found. Please enter a more specific name.')
-        } else if (countries.length >2 && countries.length <10) {
+        } else if (countries.length >1 && countries.length <10) {
             for (const country of countries) {
                 
                 let listItem = document.createElement('li');
@@ -45,12 +45,10 @@ inputSerch.addEventListener('input', debounce((e) => {
             <p>Population: ${country.population}</p>
             <p>Languages:${languages}</p>`
             
-        } else if (inputSerch.value.length === 0) {
-            console.log('Miłego dnia Panie mentorze')
-        } else {
+        }   else if (countries.length === 0) {
             Notify.failure("Oops, there is no country with that name")
         }
-           })
+    })
 },DEBOUNCE_DELAY))
 
 
