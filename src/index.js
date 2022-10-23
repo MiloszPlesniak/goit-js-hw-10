@@ -46,7 +46,7 @@ inputSerch.addEventListener('input', debounce((e) => {
             <p>Languages:${languages}</p>`
             
             
-        }
+        } 
     }).catch((error) => {
         Notify.failure("Oops, there is no country with that name")
     })
