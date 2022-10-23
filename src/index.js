@@ -45,9 +45,10 @@ inputSerch.addEventListener('input', debounce((e) => {
             <p>Population: ${country.population}</p>
             <p>Languages:${languages}</p>`
             
-        }   else if (countries.length === 0) {
-            Notify.failure("Oops, there is no country with that name")
+            
         }
+    }).catch((error) => {
+        Notify.failure("Oops, there is no country with that name")
     })
 },DEBOUNCE_DELAY))
 
